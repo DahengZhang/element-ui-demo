@@ -1,16 +1,27 @@
 <template>
-    <div class="component upload-input">
+    <div class="component upload-input" :class="[{ 'disabled': disabled }]">
         <el-select
-            v-model="selected"
+            popper-class="component upload-input"
+            :value="selectedFiles"
+            @change="deleteFile"
             multiple
             collapse-tags
             :class="[{ 'disabled': disabled }]">
-            <el-option :disabled="disabled" :value="1" :label="'附件1.pdf'">附件1.pdf</el-option>
-            <el-option :disabled="disabled" :value="2" :label="'附件2.pdf'">附件2.pdf</el-option>
+            <el-option
+                v-for="item in value"
+                :key="`${item.id}option`"
+                :disabled="disabled"
+                :value="item.id"
+                :label="`${item.fileName}.${item.fileSuffix}`">
+            </el-option>
         </el-select>
         <el-upload
+            class="el-upload-wrapper"
             :disabled="disabled"
-            action="https://api.zhangdaheng.show">
+            :show-file-list="false"
+            :on-success="uploadSuccess"
+            :on-error="uploadError"
+            action="">
             <el-button :disabled="disabled">上传</el-button>
         </el-upload>
     </div>
@@ -23,40 +34,67 @@ export default {
         disabled: {
             type: Boolean,
             default: false
+        },
+        value: {
+            type: Array
         }
     },
-    data: () => ({
-        selected: [1, 2]
-    })
+    computed: {
+        selectedFiles () {
+            return this.value.map(item => item.id)
+        }
+    },
+    methods: {
+        uploadSuccess () {
+            this.uploadFinish()
+        },
+        uploadError () {
+            this.uploadFinish()
+        },
+        uploadFinish () {
+            this.$emit('input', [ ...this.value, {
+                id: new Date().getTime(),
+                fileName: `本地文件${new Date().getTime()}`,
+                fileSuffix: `pdf`
+            }])
+        },
+        deleteFile (e) {
+            this.$emit('input', this.value.filter(item => {
+                return e.includes(item.id)
+            }))
+        }
+    }
 }
 </script>
 
 <style lang="scss">
 .component.upload-input {
-    display: flex;
     .el-select {
-        width: 100%;
-        .el-input__inner {
+        width: calc(100% - 80px);
+        .el-input .el-input__inner {
             border-top-right-radius: 0;
             border-bottom-right-radius: 0;
         }
-        &.disabled .el-tag__close {
-            display: none;
-        }
-        &:hover {
+        &:hover, &:active, &:focus {
             z-index: 2;
         }
     }
-    &>div:nth-of-type(2) {
-        &:hover, &:active {
-            z-index: 1;
-        }
-    }
-    .el-button {
+    .el-upload-wrapper {
+        display: inline-block;
         width: 80px;
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
         margin-left: -1px;
+        .el-upload {
+            width: 100%;
+            .el-button {
+                width: 100%;
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+                &:hover, &:active, &:focus {
+                    position: relative;
+                    z-index: 1;
+                }
+            }
+        }
     }
 }
 </style>
