@@ -34,6 +34,9 @@
                 }]">
                 <el-input v-model="formData.path"></el-input>
             </el-form-item>
+            <el-form-item>
+                <el-button @click="submit" type="primary">提交</el-button>
+            </el-form-item>
         </el-form>
     </div>
 </template>
@@ -78,6 +81,14 @@ export default {
                     }
                     resolve()
                 }, 1000)
+            })
+        },
+        submit () {
+            this.$refs.formEl.validate(e => {
+                if (!e) {
+                    console.error('校验失败')
+                }
+                console.log('提交')
             })
         }
     }

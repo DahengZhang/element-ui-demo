@@ -17,11 +17,12 @@
         </el-select>
         <el-upload
             class="el-upload-wrapper"
+            :data="data"
             :disabled="disabled"
             :show-file-list="false"
             :on-success="uploadSuccess"
             :on-error="uploadError"
-            action="">
+            :action="action">
             <el-button :disabled="disabled">上传</el-button>
         </el-upload>
     </div>
@@ -31,12 +32,21 @@
 export default {
     name: 'UploadInput',
     props: {
+        action: {
+            type: String,
+            required: true
+        },
+        data: {
+            type: Object,
+            default: () => ({})
+        },
         disabled: {
             type: Boolean,
             default: false
         },
         value: {
-            type: Array
+            type: Array,
+            default: () => []
         }
     },
     computed: {
@@ -95,6 +105,9 @@ export default {
                 }
             }
         }
+    }
+    &.disabled .el-upload-wrapper .el-upload .el-button {
+        position: static;
     }
 }
 </style>
