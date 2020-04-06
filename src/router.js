@@ -5,6 +5,7 @@ import UploadDemos from '@/views/UploadDemos.vue'
 import PanelDemos from '@/views/PanelDemos.vue'
 import SelectDemos from '@/views/SelectDemos.vue'
 import TableDemos from '@/views/TableDemos.vue'
+import JsonDemos from '@/views/JsonDemos.vue'
 
 Vue.use(VueRouter)
 
@@ -36,6 +37,11 @@ const router = new VueRouter({
             path: '/table',
             name: 'table',
             component: TableDemos
+        },
+        {
+            path: '/json',
+            name: 'json',
+            component: JsonDemos
         }
     ]
 })

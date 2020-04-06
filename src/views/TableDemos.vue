@@ -34,10 +34,10 @@
 export default {
     name: 'FormDemos',
     data: () => ({
-        disabledItems: [ 10, 11, 12, 13 ],
+        disabledItems: [ 10, 11, 12, 13, 30 ],
         tableData: [  ],
-        selected: [  ], // 10, 11, 12, 13
-        selectedObj: [  ], // { "value": 10, "label": "第10行数据" }, { "value": 11, "label": "第11行数据" }, { "value": 12, "label": "第12行数据" }, { "value": 13, "label": "第13行数据" }
+        selected: [ 30 ], // 10, 11, 12, 13
+        selectedObj: [ { "value": 30, "label": "第30行数据" } ], // { "value": 10, "label": "第10行数据" }, { "value": 11, "label": "第11行数据" }, { "value": 12, "label": "第12行数据" }, { "value": 13, "label": "第13行数据" }
         page: 1
     }),
     mounted () {
